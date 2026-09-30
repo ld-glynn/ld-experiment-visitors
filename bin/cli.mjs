@@ -4,12 +4,17 @@
 import { loadJourney } from '../src/journey.mjs';
 import { launchBrowser } from '../src/browser.mjs';
 import { runVisitor } from '../src/visitor.mjs';
+import { runInit } from '../src/init.mjs';
 
 const HELP = `
 ld-experiment-visitors  -  real browser visitors for your LaunchDarkly experiment
 
 Usage:
+  npx -y github:ld-glynn/ld-experiment-visitors init [journey.json]
+      Answer a few questions and write the journey file.
+
   npx -y github:ld-glynn/ld-experiment-visitors <journey.json | b64:...> [options]
+      Send visitors described by the journey file.
 
 Options:
   --once            Send a single visitor and report what happened (a quick check)
@@ -21,7 +26,7 @@ Options:
 
 The journey file describes your staging URL, how a visitor converts (click a
 selector or reach a page, with probabilities), and how many visitors arrive.
-Create one at https://ld-metric-simulator.vercel.app
+Run \`init\` to create one, or copy journey.example.json.
 `;
 
 function parseArgs(argv) {
@@ -56,6 +61,10 @@ async function main() {
   if (opts.help || !source) {
     console.log(HELP);
     process.exit(opts.help ? 0 : 1);
+  }
+  if (source === 'init') {
+    await runInit(process.argv.slice(2)[1] || 'journey.json');
+    return;
   }
 
   const journey = await loadJourney(source);

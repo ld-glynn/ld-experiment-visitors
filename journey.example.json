@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "name": "Checkout button test",
+  "url": "https://staging.example.com/",
+  "actions": [
+    { "type": "click", "selector": "#buy-now", "probability": 0.06 },
+    { "type": "visit", "url": "/thank-you", "probability": 0.02 }
+  ],
+  "visitorsPerHour": 120,
+  "durationMinutes": 240,
+  "concurrency": 2,
+  "devices": "mixed"
+}
